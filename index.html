@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="hi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Model Compass | कौन सा AI मॉडल कब यूज़ करें?</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#3b82f6',
+            cardbg: '#1e293b',
+            darkbg: '#0f172a'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', 'Noto Sans Devanagari', sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-16 antialiased selection:bg-blue-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass border-b border-slate-800 px-4 py-3 sm:py-4">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="text-2xl">🧭</span>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">AI Model Compass</h1>
+          <p class="text-xs text-slate-400 hidden sm:block">याद रखने की झंझट खत्म — जानिए कौन सा AI मॉडल किस काम के लिए बेस्ट है</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="shareLink()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+          <span>Share Link</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 pt-6 space-y-8">
+
+    <!-- Quick Filter / Purpose Selector -->
+    <section class="space-y-3">
+      <div class="text-center sm:text-left">
+        <h2 class="text-base sm:text-lg font-bold text-slate-200">🎯 आपका काम क्या है? (One-Tap Finder)</h2>
+        <p class="text-xs text-slate-400">नीचे अपनी जरूरत चुनें, सबसे बेस्ट AI मॉडल तुरंत सामने दिखेगा:</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium">
+        <button onclick="filterCategory('code')" class="filter-btn active py-2.5 px-3 rounded-xl border border-blue-500/50 bg-blue-500/20 text-blue-300 font-semibold flex items-center justify-center gap-1.5 transition">
+          💻 Coding & Debug
+        </button>
+        <button onclick="filterCategory('reasoning')" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
+          🧠 Deep Logic & Math
+        </button>
+        <button onclick="filterCategory('free')" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
+          ⚡ 100% Free / Daily
+        </button>
+        <button onclick="filterCategory('creative')" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
+          ✍️ Writing & Video
+        </button>
+      </div>
+    </section>
+
+    <!-- Golden Rule Box -->
+    <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-500/30 text-xs sm:text-sm text-slate-300 flex items-start gap-3">
+      <span class="text-xl">💡</span>
+      <div>
+        <strong class="text-blue-300">याद रखने का सीधा नियम (Golden Rule):</strong><br>
+        अगर कोडिंग या लॉजिक का काम है तो <b>DeepSeek / Qwen</b> यूज़ करें (सस्ता/फ्री और बेस्ट)। 
+        अगर लम्बी बातचीत, डॉक्यूमेंट्स समझना या राइटिंग है तो <b>Gemini / Claude</b> यूज़ करें।
+      </div>
+    </div>
+
+    <!-- Models Grid -->
+    <section class="space-y-4">
+      <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">शीर्ष अनुशंसित मॉडल्स (Top Models List)</h3>
+      
+      <div id="models-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <!-- DeepSeek V3 / R1 -->
+        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="code reasoning free">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-base text-white">DeepSeek R1 / V3</h4>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Free / Open-Source</span>
+              </div>
+              <p class="text-xs text-blue-400 font-medium mt-0.5">किंग ऑफ कोडिंग और रीज़निंग</p>
+            </div>
+            <span class="text-2xl">⚡</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            यह मॉडल OpenAI o1 और Claude 3.5 Sonnet को टक्कर देता है। जटिल बग्स सुलझाने, Math और कॉम्प्लेक्स लॉजिक के लिए बेस्ट है।
+          </p>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">फ्री कहाँ मिलेगा: <b>chat.deepseek.com</b></span>
+            <a href="https://chat.deepseek.com" target="_blank" class="text-blue-400 hover:underline">Try Free &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Claude 3.7 Sonnet -->
+        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="code creative reasoning">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-base text-white">Claude 3.7 Sonnet</h4>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30">Hybrid Thinking</span>
+              </div>
+              <p class="text-xs text-purple-400 font-medium mt-0.5">सर्वश्रेष्ठ कोडिंग और ह्यूमन-लाइक राइटिंग</p>
+            </div>
+            <span class="text-2xl">🧠</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            फ्रंटएंड, यूआई डिजाइन, फुल-स्टैक ऐप्स और हाई-क्वालिटी कंटेंट राइटिंग के लिए दुनिया का सबसे बेहतरीन मॉडल।
+          </p>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">कहाँ मिलेगा: <b>claude.ai</b> (Free Tier उपलब्ध)</span>
+            <a href="https://claude.ai" target="_blank" class="text-purple-400 hover:underline">Open &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Gemini 2.5 Flash / Pro -->
+        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="free creative">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-base text-white">Gemini 2.5 Flash</h4>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">1M+ Context / Superfast</span>
+              </div>
+              <p class="text-xs text-teal-400 font-medium mt-0.5">बड़ी PDF, वीडियो और दैनिक सवालों के लिए</p>
+            </div>
+            <span class="text-2xl">🚀</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            पूरी किताब या लम्बा कोड एक साथ पेस्ट करें। सुपर-फास्ट स्पीड और भारी-भरकम संदर्भ (Context) को बिना भूले समझता है।
+          </p>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">फ्री कहाँ मिलेगा: <b>aistudio.google.com</b></span>
+            <a href="https://aistudio.google.com" target="_blank" class="text-teal-400 hover:underline">Free API &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Qwen 2.5 Coder -->
+        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="code free">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-base text-white">Qwen 2.5 Coder (32B)</h4>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">100% Open Weights</span>
+              </div>
+              <p class="text-xs text-emerald-400 font-medium mt-0.5">ओपन-सोर्स कोडिंग का बादशाह</p>
+            </div>
+            <span class="text-2xl">💻</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Alibaba का बनाया यह मॉडल कोडिंग में क्लॉड और GPT को कड़ी टक्कर देता है। इसे लोकल या फ्री API से चलाया जा सकता है।
+          </p>
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">कहाँ मिलेगा: <b>Groq / OpenRouter Free</b></span>
+            <a href="https://openrouter.ai" target="_blank" class="text-emerald-400 hover:underline">Explore &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Free Resources Section -->
+    <section class="border border-slate-800 bg-slate-900/50 rounded-2xl p-5 space-y-4">
+      <h3 class="text-sm font-bold text-white flex items-center gap-2">
+        <span>🎁</span> मुफ्त में बड़े मॉडल्स कैसे चलाएं? (Free Hubs)
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50 space-y-1">
+          <div class="font-bold text-blue-300">1. OpenRouter.ai</div>
+          <p class="text-slate-400">फ़िल्टर में 'Free' सेलेक्ट करें। DeepSeek, Llama और Mistral के दर्जनों मॉडल्स $0 में मिलेंगे।</p>
+        </div>
+        <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50 space-y-1">
+          <div class="font-bold text-teal-300">2. Google AI Studio</div>
+          <p class="text-slate-400">Gemini 2.5 Pro और Flash की फ्री API की (Generous Free Quota) तुरंत मिलती है।</p>
+        </div>
+        <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50 space-y-1">
+          <div class="font-bold text-purple-300">3. Groq Cloud</div>
+          <p class="text-slate-400">सुपर-फास्ट स्पीड (500 tokens/sec)। Llama 3.3 और Qwen बिना किसी फीस के उपयोग करें।</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Share Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white text-xs px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition duration-300">
+    Link copied to clipboard! 📋
+  </div>
+
+  <script>
+    function filterCategory(cat) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('border-blue-500/50', 'bg-blue-500/20', 'text-blue-300', 'font-semibold');
+        btn.classList.add('border-slate-800', 'bg-slate-900', 'text-slate-300');
+      });
+      event.currentTarget.classList.add('border-blue-500/50', 'bg-blue-500/20', 'text-blue-300', 'font-semibold');
+      event.currentTarget.classList.remove('border-slate-800', 'bg-slate-900', 'text-slate-300');
+
+      const cards = document.querySelectorAll('.model-card');
+      cards.forEach(card => {
+        const categories = card.getAttribute('data-cat') || '';
+        if (categories.includes(cat)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function shareLink() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'AI Model Compass',
+          text: 'कौन सा AI मॉडल कब यूज़ करें? पूरी फ्री गाइड:',
+          url: window.location.href
+        }).catch(() => copyLink());
+      } else {
+        copyLink();
+      }
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      const toast = document.getElementById('toast');
+      toast.classList.remove('opacity-0');
+      setTimeout(() => toast.classList.add('opacity-0'), 2000);
+    }
+  </script>
+</body>
+</html>
