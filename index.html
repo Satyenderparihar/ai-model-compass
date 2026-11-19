@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Model Compass | कौन सा AI मॉडल कब यूज़ करें?</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -41,6 +40,7 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
+        <span class="text-[11px] bg-slate-800/80 border border-slate-700/60 text-slate-300 px-2 py-1 rounded-md hidden sm:inline-block">🟢 Auto-Tracked</span>
         <button onclick="shareLink()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition active:scale-95">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
           <span>Share Link</span>
@@ -49,138 +49,58 @@
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-4 pt-6 space-y-8">
+  <main class="max-w-4xl mx-auto px-4 pt-6 space-y-6">
 
-    <!-- Quick Filter / Purpose Selector -->
+    <!-- Search & Filter -->
     <section class="space-y-3">
-      <div class="text-center sm:text-left">
-        <h2 class="text-base sm:text-lg font-bold text-slate-200">🎯 आपका काम क्या है? (One-Tap Finder)</h2>
-        <p class="text-xs text-slate-400">नीचे अपनी जरूरत चुनें, सबसे बेस्ट AI मॉडल तुरंत सामने दिखेगा:</p>
+      <div class="relative">
+        <input type="text" id="searchInput" oninput="filterModels()" placeholder="🔍 सर्च करें (जैसे: code, reasoning, free, deepseek, claude)..." 
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition">
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium">
-        <button onclick="filterCategory('code')" class="filter-btn active py-2.5 px-3 rounded-xl border border-blue-500/50 bg-blue-500/20 text-blue-300 font-semibold flex items-center justify-center gap-1.5 transition">
-          💻 Coding & Debug
+        <button onclick="setCategory('all')" id="btn-all" class="filter-btn active py-2.5 px-3 rounded-xl border border-blue-500/50 bg-blue-500/20 text-blue-300 font-semibold flex items-center justify-center gap-1.5 transition">
+          🔥 All Top Models
         </button>
-        <button onclick="filterCategory('reasoning')" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
+        <button onclick="setCategory('code')" id="btn-code" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
+          💻 Coding & Dev
+        </button>
+        <button onclick="setCategory('reasoning')" id="btn-reasoning" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
           🧠 Deep Logic & Math
         </button>
-        <button onclick="filterCategory('free')" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
-          ⚡ 100% Free / Daily
-        </button>
-        <button onclick="filterCategory('creative')" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
-          ✍️ Writing & Video
+        <button onclick="setCategory('free')" id="btn-free" class="filter-btn py-2.5 px-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 flex items-center justify-center gap-1.5 transition">
+          ⚡ 100% Free Tier ($0)
         </button>
       </div>
     </section>
 
     <!-- Golden Rule Box -->
-    <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-500/30 text-xs sm:text-sm text-slate-300 flex items-start gap-3">
+    <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-900/30 via-slate-900/40 to-purple-900/30 border border-blue-500/30 text-xs sm:text-sm text-slate-300 flex items-start gap-3">
       <span class="text-xl">💡</span>
       <div>
         <strong class="text-blue-300">याद रखने का सीधा नियम (Golden Rule):</strong><br>
-        अगर कोडिंग या लॉजिक का काम है तो <b>DeepSeek / Qwen</b> यूज़ करें (सस्ता/फ्री और बेस्ट)। 
-        अगर लम्बी बातचीत, डॉक्यूमेंट्स समझना या राइटिंग है तो <b>Gemini / Claude</b> यूज़ करें।
+        1. कोडिंग और लॉजिक के लिए 👉 <b>DeepSeek R1 / V3</b> और <b>Qwen 2.5 Coder</b> (100% Free & Best)।<br>
+        2. कॉम्प्लेक्स ऐप्स और आर्किटेक्चर के लिए 👉 <b>Claude 3.7 Sonnet</b>।<br>
+        3. बड़ी बुक्स, PDF और रोज़मर्रा के सवालों के लिए 👉 <b>Gemini 2.5 Flash</b> (1M Context)।
       </div>
     </div>
 
     <!-- Models Grid -->
     <section class="space-y-4">
-      <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">शीर्ष अनुशंसित मॉडल्स (Top Models List)</h3>
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">ट्रैक्ड मॉडल्स (Tracked AI Models)</h3>
+        <span id="model-count" class="text-xs text-slate-400 font-medium"></span>
+      </div>
       
-      <div id="models-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
-        <!-- DeepSeek V3 / R1 -->
-        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="code reasoning free">
-          <div class="flex items-start justify-between">
-            <div>
-              <div class="flex items-center gap-2">
-                <h4 class="font-bold text-base text-white">DeepSeek R1 / V3</h4>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Free / Open-Source</span>
-              </div>
-              <p class="text-xs text-blue-400 font-medium mt-0.5">किंग ऑफ कोडिंग और रीज़निंग</p>
-            </div>
-            <span class="text-2xl">⚡</span>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            यह मॉडल OpenAI o1 और Claude 3.5 Sonnet को टक्कर देता है। जटिल बग्स सुलझाने, Math और कॉम्प्लेक्स लॉजिक के लिए बेस्ट है।
-          </p>
-          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span class="text-slate-400">फ्री कहाँ मिलेगा: <b>chat.deepseek.com</b></span>
-            <a href="https://chat.deepseek.com" target="_blank" class="text-blue-400 hover:underline">Try Free &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Claude 3.7 Sonnet -->
-        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="code creative reasoning">
-          <div class="flex items-start justify-between">
-            <div>
-              <div class="flex items-center gap-2">
-                <h4 class="font-bold text-base text-white">Claude 3.7 Sonnet</h4>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30">Hybrid Thinking</span>
-              </div>
-              <p class="text-xs text-purple-400 font-medium mt-0.5">सर्वश्रेष्ठ कोडिंग और ह्यूमन-लाइक राइटिंग</p>
-            </div>
-            <span class="text-2xl">🧠</span>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            फ्रंटएंड, यूआई डिजाइन, फुल-स्टैक ऐप्स और हाई-क्वालिटी कंटेंट राइटिंग के लिए दुनिया का सबसे बेहतरीन मॉडल।
-          </p>
-          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span class="text-slate-400">कहाँ मिलेगा: <b>claude.ai</b> (Free Tier उपलब्ध)</span>
-            <a href="https://claude.ai" target="_blank" class="text-purple-400 hover:underline">Open &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Gemini 2.5 Flash / Pro -->
-        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="free creative">
-          <div class="flex items-start justify-between">
-            <div>
-              <div class="flex items-center gap-2">
-                <h4 class="font-bold text-base text-white">Gemini 2.5 Flash</h4>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">1M+ Context / Superfast</span>
-              </div>
-              <p class="text-xs text-teal-400 font-medium mt-0.5">बड़ी PDF, वीडियो और दैनिक सवालों के लिए</p>
-            </div>
-            <span class="text-2xl">🚀</span>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            पूरी किताब या लम्बा कोड एक साथ पेस्ट करें। सुपर-फास्ट स्पीड और भारी-भरकम संदर्भ (Context) को बिना भूले समझता है।
-          </p>
-          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span class="text-slate-400">फ्री कहाँ मिलेगा: <b>aistudio.google.com</b></span>
-            <a href="https://aistudio.google.com" target="_blank" class="text-teal-400 hover:underline">Free API &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Qwen 2.5 Coder -->
-        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition" data-cat="code free">
-          <div class="flex items-start justify-between">
-            <div>
-              <div class="flex items-center gap-2">
-                <h4 class="font-bold text-base text-white">Qwen 2.5 Coder (32B)</h4>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">100% Open Weights</span>
-              </div>
-              <p class="text-xs text-emerald-400 font-medium mt-0.5">ओपन-सोर्स कोडिंग का बादशाह</p>
-            </div>
-            <span class="text-2xl">💻</span>
-          </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Alibaba का बनाया यह मॉडल कोडिंग में क्लॉड और GPT को कड़ी टक्कर देता है। इसे लोकल या फ्री API से चलाया जा सकता है।
-          </p>
-          <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span class="text-slate-400">कहाँ मिलेगा: <b>Groq / OpenRouter Free</b></span>
-            <a href="https://openrouter.ai" target="_blank" class="text-emerald-400 hover:underline">Explore &rarr;</a>
-          </div>
-        </div>
-
+      <div id="models-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Injected via JavaScript -->
       </div>
     </section>
 
-    <!-- Free Resources Section -->
+    <!-- Free Hubs Section -->
     <section class="border border-slate-800 bg-slate-900/50 rounded-2xl p-5 space-y-4">
       <h3 class="text-sm font-bold text-white flex items-center gap-2">
-        <span>🎁</span> मुफ्त में बड़े मॉडल्स कैसे चलाएं? (Free Hubs)
+        <span>🎁</span> मुफ्त में बड़े मॉडल्स कैसे चलाएं? (Free Hubs Guide)
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
         <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50 space-y-1">
@@ -206,23 +126,70 @@
   </div>
 
   <script>
-    function filterCategory(cat) {
+    const modelsData = [{"id": "deepseek/deepseek-r1", "name": "DeepSeek R1", "tag": "King of Reasoning & Code", "badge": "Open-Weights / SOTA", "category": "code reasoning free", "desc": "OpenAI o1 और Claude Sonnet के बराबर रीजनिंग। गणित, कॉम्प्लेक्स बग्स और लॉजिक के लिए बेस्ट।", "free_url": "https://chat.deepseek.com", "free_where": "chat.deepseek.com ($0 Free Web)", "context_length": 64000, "is_free": true}, {"id": "anthropic/claude-3.7-sonnet", "name": "Claude 3.7 Sonnet (Thinking)", "tag": "Best for Coding & Architecture", "badge": "Hybrid Reasoning", "category": "code creative reasoning", "desc": "विश्व का नंबर 1 कोडिंग मॉडल। क्लीन कोड, आर्किटेक्चर, UI डिजाइन और हाई-क्वालिटी कंटेंट में बेजोड़।", "free_url": "https://claude.ai", "free_where": "claude.ai (Free Tier Available)", "context_length": 200000, "is_free": false}, {"id": "google/gemini-2.5-flash", "name": "Gemini 2.5 Flash", "tag": "1M+ Context & Superfast", "badge": "Generous Free API", "category": "free creative code", "desc": "बड़ी फाइल्स, पूरी बुक्स, और रोज़मर्रा के तेज़ सवालों के लिए 100% बेस्ट स्पीड और 1M टोकन मेमोरी।", "free_url": "https://aistudio.google.com", "free_where": "aistudio.google.com ($0 Free API)", "context_length": 1048576, "is_free": true}, {"id": "qwen/qwen-2.5-coder-32b-instruct", "name": "Qwen 2.5 Coder 32B", "tag": "Top Open-Source Coder", "badge": "100% Free on Groq", "category": "code free", "desc": "Alibaba का शानदार मॉडल। Python, Web, C++ और ऑटोमेशन कोडिंग में क्लॉड को टक्कर देता है।", "free_url": "https://groq.com", "free_where": "Groq & OpenRouter ($0 Free API)", "context_length": 32768, "is_free": true}, {"id": "inclusionai/ling-3.2-flash:free", "name": "inclusionAI: Ling 3.2 Flash (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "reasoning free creative", "desc": "Ling 3.2 Flash is a hybrid reasoning model from inclusionAI that accepts text and image input, with a 1M-token context window and up to 200 images per reques...", "free_url": "https://openrouter.ai/inclusionai/ling-3.2-flash:free", "free_where": "OpenRouter Free ($0)", "context_length": 1048576, "is_free": true}, {"id": "baidu/ernie-5.5-flash-preview:free", "name": "Baidu: ERNIE-5.5-Flash-Preview (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "code free creative", "desc": "ERNIE 5.5 Flash Preview is the latest foundation model in the ERNIE family, with comprehensive improvements in coding, agentic capabilities, knowledge work, ...", "free_url": "https://openrouter.ai/baidu/ernie-5.5-flash-preview:free", "free_where": "OpenRouter Free ($0)", "context_length": 1024000, "is_free": true}, {"id": "thinkingmachines/inkling-2-small:free", "name": "Thinking Machines: Inkling 2 Small (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "reasoning free", "desc": "Inkling 2 Small is an open-weight multimodal mixture-of-experts reasoning model from Thinking Machines Lab, with 17B active parameters out of 594B total. It ...", "free_url": "https://openrouter.ai/thinkingmachines/inkling-2-small:free", "free_where": "OpenRouter Free ($0)", "context_length": 1048576, "is_free": true}, {"id": "liquid/lfm-3-1.7b:free", "name": "LiquidAI: LFM3-1.7B (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "reasoning free", "desc": "A compact 1.7B-parameter text model with a 256K-token context, post-trained for agents, tool calling, and structured outputs. It reasons before it answers. P...", "free_url": "https://openrouter.ai/liquid/lfm-3-1.7b:free", "free_where": "OpenRouter Free ($0)", "context_length": 262144, "is_free": true}, {"id": "particle-ai/particle-1:free", "name": "Particle AI: Particle-1 (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "code free creative", "desc": "Particle-1 is a token-efficient agentic coding model from Particle AI, post-trained on DeepSeek V4.1 Flash. It is suited for software engineering work such a...", "free_url": "https://openrouter.ai/particle-ai/particle-1:free", "free_where": "OpenRouter Free ($0)", "context_length": 1048576, "is_free": true}, {"id": "recursive/flint-v1.0:free", "name": "Recursive: Flint (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "Flint is an open-weight mixture-of-experts model from Recursive, with about 2.5B active parameters out of 40B total, built by Recursive's autoresearch system...", "free_url": "https://openrouter.ai/recursive/flint-v1.0:free", "free_where": "OpenRouter Free ($0)", "context_length": 262144, "is_free": true}, {"id": "nvidia/nemotron-3.5-super-vl:free", "name": "NVIDIA: Nemotron 3.5 Super VL (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "NVIDIA Nemotron 3.5 Super VL is an open multimodal mixture-of-experts model from NVIDIA, with 12B active parameters out of 120B total. It takes text, images,...", "free_url": "https://openrouter.ai/nvidia/nemotron-3.5-super-vl:free", "free_where": "OpenRouter Free ($0)", "context_length": 1000000, "is_free": true}, {"id": "dots-studio/dots-3-note-preview:free", "name": "Dots Studio: Dots3-Note Preview (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "Dots3-Note Preview is an open-weight mixture-of-experts model from Dots Studio, with 16B active parameters out of 280B total. It is the lightest model in the...", "free_url": "https://openrouter.ai/dots-studio/dots-3-note-preview:free", "free_where": "OpenRouter Free ($0)", "context_length": 512000, "is_free": true}, {"id": "nvidia/nemotron-3.5-lightning:free", "name": "NVIDIA: Nemotron 3.5 Lightning (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "NVIDIA Nemotron 3.5 Lightning is an open mixture-of-experts model from NVIDIA, with 3B active parameters out of 30B total. It is suited for high-throughput a...", "free_url": "https://openrouter.ai/nvidia/nemotron-3.5-lightning:free", "free_where": "OpenRouter Free ($0)", "context_length": 1000000, "is_free": true}, {"id": "cohere/north-mini-code:free", "name": "Cohere: North Mini Code (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "code free", "desc": "North Mini Code is Cohere's first agentic coding model and the debut of its North family. A sparse mixture-of-experts model with 30B total parameters and 3B ...", "free_url": "https://openrouter.ai/cohere/north-mini-code:free", "free_where": "OpenRouter Free ($0)", "context_length": 256000, "is_free": true}, {"id": "nvidia/nemotron-3-ultra-550b-a55b:free", "name": "NVIDIA: Nemotron 3 Ultra (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "reasoning free", "desc": "NVIDIA Nemotron 3 Ultra is an open frontier-reasoning and orchestration model from NVIDIA, with 55B active parameters out of 550B total (MoE). Built on a hyb...", "free_url": "https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free", "free_where": "OpenRouter Free ($0)", "context_length": 1000000, "is_free": true}, {"id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "name": "NVIDIA: Nemotron 3 Nano Omni (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "reasoning free", "desc": "NVIDIA Nemotron™ 3 Nano Omni is a 30B-A3B open multimodal model designed to function as a perception and context sub-agent in enterprise agent systems. It ac...", "free_url": "https://openrouter.ai/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "free_where": "OpenRouter Free ($0)", "context_length": 256000, "is_free": true}, {"id": "google/gemma-4-26b-a4b-it:free", "name": "Google: Gemma 4 26B A4B  (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "Gemma 4 26B A4B IT is an instruction-tuned Mixture-of-Experts (MoE) model from Google DeepMind. Despite 25.2B total parameters, only 3.8B activate per token ...", "free_url": "https://openrouter.ai/google/gemma-4-26b-a4b-it:free", "free_where": "OpenRouter Free ($0)", "context_length": 262144, "is_free": true}, {"id": "google/gemma-4-31b-it:free", "name": "Google: Gemma 4 31B (free)", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model supporting text and image input with text output. Features a 256K token context window...", "free_url": "https://openrouter.ai/google/gemma-4-31b-it:free", "free_where": "OpenRouter Free ($0)", "context_length": 262144, "is_free": true}, {"id": "google/lyria-3-pro-preview", "name": "Google: Lyria 3 Pro Preview", "tag": "100% Free Tier Model", "badge": "Free API", "category": "creative free", "desc": "Full-length songs are priced at $0.08 per song. Lyria 3 is Google's family of music generation models, available through the Gemini API. With Lyria 3, you ca...", "free_url": "https://openrouter.ai/google/lyria-3-pro-preview", "free_where": "OpenRouter Free ($0)", "context_length": 1048576, "is_free": true}, {"id": "google/lyria-3-clip-preview", "name": "Google: Lyria 3 Clip Preview", "tag": "100% Free Tier Model", "badge": "Free API", "category": "creative free", "desc": "30 second duration clips are priced at $0.04 per clip. Lyria 3 is Google's family of music generation models, available through the Gemini API. With Lyria 3,...", "free_url": "https://openrouter.ai/google/lyria-3-clip-preview", "free_where": "OpenRouter Free ($0)", "context_length": 1048576, "is_free": true}, {"id": "openrouter/free", "name": "Free Models Router", "tag": "100% Free Tier Model", "badge": "Free API", "category": "free", "desc": "The simplest way to get free inference. openrouter/free is a router that selects free models at random from the models available on OpenRouter. The router sm...", "free_url": "https://openrouter.ai/openrouter/free", "free_where": "OpenRouter Free ($0)", "context_length": 200000, "is_free": true}];
+    let activeCategory = 'all';
+
+    function renderModels() {
+      const container = document.getElementById('models-container');
+      const query = (document.getElementById('searchInput').value || '').toLowerCase();
+      
+      const filtered = modelsData.filter(m => {
+        const matchesCategory = activeCategory === 'all' || (m.category && m.category.includes(activeCategory));
+        const matchesSearch = !query || 
+          m.name.toLowerCase().includes(query) || 
+          m.id.toLowerCase().includes(query) || 
+          (m.desc && m.desc.toLowerCase().includes(query)) ||
+          (m.category && m.category.toLowerCase().includes(query));
+        return matchesCategory && matchesSearch;
+      });
+
+      document.getElementById('model-count').innerText = `${filtered.length} Models`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full py-12 text-center text-slate-500 text-sm">कोई मॉडल नहीं मिला। कृपया सर्च टर्म बदलें।</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(m => `
+        <div class="model-card border border-slate-800 bg-slate-900/90 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-start justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h4 class="font-bold text-base text-white">${m.name}</h4>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${m.is_free ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}">${m.badge || (m.is_free ? 'Free' : 'Pro')}</span>
+                </div>
+                <p class="text-xs text-blue-400 font-medium mt-0.5">${m.tag || 'AI Model'}</p>
+              </div>
+              <span class="text-xl">${m.is_free ? '⚡' : '🧠'}</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">${m.desc || ''}</p>
+          </div>
+          
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">फ्री: <b class="text-slate-200">${m.free_where || 'OpenRouter'}</b></span>
+            <a href="${m.free_url}" target="_blank" rel="noopener" class="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1">Try &rarr;</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('border-blue-500/50', 'bg-blue-500/20', 'text-blue-300', 'font-semibold');
         btn.classList.add('border-slate-800', 'bg-slate-900', 'text-slate-300');
       });
-      event.currentTarget.classList.add('border-blue-500/50', 'bg-blue-500/20', 'text-blue-300', 'font-semibold');
-      event.currentTarget.classList.remove('border-slate-800', 'bg-slate-900', 'text-slate-300');
+      const activeBtn = document.getElementById(`btn-${cat}`);
+      if (activeBtn) {
+        activeBtn.classList.add('border-blue-500/50', 'bg-blue-500/20', 'text-blue-300', 'font-semibold');
+        activeBtn.classList.remove('border-slate-800', 'bg-slate-900', 'text-slate-300');
+      }
+      renderModels();
+    }
 
-      const cards = document.querySelectorAll('.model-card');
-      cards.forEach(card => {
-        const categories = card.getAttribute('data-cat') || '';
-        if (categories.includes(cat)) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
+    function filterModels() {
+      renderModels();
     }
 
     function shareLink() {
@@ -243,6 +210,9 @@
       toast.classList.remove('opacity-0');
       setTimeout(() => toast.classList.add('opacity-0'), 2000);
     }
+
+    // Initial render
+    renderModels();
   </script>
 </body>
 </html>
